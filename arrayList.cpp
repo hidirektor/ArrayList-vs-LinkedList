@@ -2,6 +2,7 @@
 // Created by Turing on 12.04.2022.
 //
 #include <iostream>
+#include <chrono>
 
 using namespace std;
 
@@ -25,7 +26,7 @@ public:
         delete lowestP;
     }
 
-    bool isEmpty() const {
+    bool bosKontrol() const {
         bool elementState = true;
         int i = 0;
         for(int i = 0; i < this->size; i++) {
@@ -36,7 +37,7 @@ public:
         }
         return elementState;
     }
-    bool isFull() const {
+    bool dolulukKontrol() const {
         bool elementState = true;
         int i = 0;
         for(int i = 0; i < this->size; i++) {
@@ -47,7 +48,7 @@ public:
         }
         return elementState;
     }
-    int listSize() const {
+    int listBoyut() const {
         int i = 0;
         int count = 0;
         for(int i = 0; i < this->size; i++) {
@@ -58,21 +59,21 @@ public:
         }
         return count;
     }
-    int maxListSize() const {
+    int maxBoyut() const {
         return this->size;
     }
-    void print() {
+    void yazdir() {
         for(int i = 0; i < this->size; i++) {
             cout << array[i] << " ";
         }
     }
-    bool isItemAtEqual(int a, elemType b) {
+    bool denklikKontrol(int a, elemType b) {
         if(array[a] == b) {
             return true;
         }
         return false;
     }
-    void insertAt(int a, elemType b) {
+    void ekle(int a, elemType b) {
         elemType temp;
         bool entered = false;
         for(int i = 0; i < this->size; i++) {
@@ -89,19 +90,19 @@ public:
             }
         }
     }
-    void insertEnd(elemType a) {
+    void sonaEkle(elemType a) {
         array[this->size-1] = a;
     }
-    void removeAt(int a) {
+    void kaldir(int a) {
         array[a] = 0;
     }
-    elemType retreiveAt(int a) {
+    elemType getir(int a) {
         return array[a];
     }
-    void replaceAt(int a, elemType b) {
+    void degistir(int a, elemType b) {
         array[a] = b;
     }
-    void clearList() {
+    void temizle() {
         for(int i = 0; i < 10; i++) {
             array[i] = 0;
         }
@@ -110,7 +111,7 @@ public:
         return arrayList();
     }
 
-    elemType getMin() {
+    elemType minDeger() {
         if (!lowestSet) {
             lowest = *lowestP;
             lowestSet = true;
@@ -125,89 +126,114 @@ public:
             lowestP++;
             size--;
         }
-        return getMin();
+        return minDeger();
     }
 };
 
 int main() {
-    arrayList<int> c(100);
-    cout << "The arrayList.h header testing with integers." << endl << endl;
-    cout << endl; c.print(); cout << endl;
-    if(c.isEmpty()) {
-        cout << endl << "array List is empty" << endl;
-    } else {
-        cout << "array List is not empty" << endl;
+    arrayList<int> yuzlukArray(100);
+    arrayList<int> binlikArray(1000);
+    arrayList<int> onbinlikArray(10000);
+
+    /*
+     * 100'lük eleman ekleme işlemi:
+     */
+    for(int i=0; i<100; i++) {
+        yuzlukArray.ekle(rand(), i);
     }
+    cout << "\n100'luk array: " << endl;
+    yuzlukArray.yazdir();
 
-    if(c.isFull() == true) {
-        cout << "array List is Full" << endl;
-    } else if(!c.isFull()) {
-        cout << "array List is not Full" << endl;
+    //Başa ekleme işlemi:
+    auto beginzeroPoint100 = chrono::high_resolution_clock::now();
+    yuzlukArray.ekle(rand(), 1);
+    auto endzeroPoint100 = chrono::high_resolution_clock::now();
+    auto elapsedzeroPoint100 = chrono::duration_cast<chrono::microseconds>(endzeroPoint100 - beginzeroPoint100);
+
+    //Ortaya ekleme işlemi:
+    auto beginmidPoint100 = chrono::high_resolution_clock::now();
+    yuzlukArray.ekle(rand(), 50);
+    auto endmidPoint100 = chrono::high_resolution_clock::now();
+    auto elapsedmidPoint100 = chrono::duration_cast<chrono::microseconds>(endmidPoint100 - beginmidPoint100);
+
+    //Sona ekleme işlemi:
+    auto beginendPoint100 = chrono::high_resolution_clock::now();
+    yuzlukArray.sonaEkle(rand());
+    auto endendPoint100 = chrono::high_resolution_clock::now();
+    auto elapsedendPoint100 = chrono::duration_cast<chrono::microseconds>(endendPoint100 - beginendPoint100);
+
+    /*
+     * 1000'lik array için:
+     */
+    for(int i=0; i<1000; i++) {
+        binlikArray.ekle(rand(), i);
     }
+    cout << "\n1000'lik array: " << endl;
+    binlikArray.yazdir();
 
-    cout << "the list size is " << c.listSize() << endl;
-    cout << "the max list size is " << c.maxListSize() << endl;
+    //Başa ekleme işlemi:
+    auto beginzeroPoint1000 = chrono::high_resolution_clock::now();
+    binlikArray.ekle(rand(), 1);
+    auto endzeroPoint1000 = chrono::high_resolution_clock::now();
+    auto elapsedzeroPoint1000 = chrono::duration_cast<chrono::microseconds>(endzeroPoint1000 - beginzeroPoint1000);
 
-    c.print();
-    cout << endl;
-    if(c.isItemAtEqual(5, 10)) {
-        cout << "Item is equal" << endl;
-    } else {
-        cout << "Item is not equal" << endl;
+    //Ortaya ekleme işlemi:
+    auto beginmidPoint1000 = chrono::high_resolution_clock::now();
+    binlikArray.ekle(rand(), 500);
+    auto endmidPoint1000 = chrono::high_resolution_clock::now();
+    auto elapsedmidPoint1000 = chrono::duration_cast<chrono::microseconds>(endmidPoint1000 - beginmidPoint1000);
+
+    //Ortaya ekleme işlemi:
+    auto beginendPoint1000 = chrono::high_resolution_clock::now();
+    binlikArray.sonaEkle(rand());
+    auto endendPoint1000 = chrono::high_resolution_clock::now();
+    auto elapsedendPoint1000 = chrono::duration_cast<chrono::microseconds>(endendPoint1000 - beginendPoint1000);
+
+    /*
+     * 10000'lik array için:
+     */
+    for(int i=0; i<10000; i++) {
+        onbinlikArray.ekle(rand(), i);
     }
+    cout << "\n10000'lik array: " << endl;
+    onbinlikArray.yazdir();
 
-    c.insertAt(2,2);
-    c.print(); cout << ": insertAt";
-    cout << endl;
-    c.insertAt(2,3);
-    c.print(); cout << ": insertAt";
-    cout << endl;
-    c.insertEnd(2);
-    c.print();cout << ": insertEnd";
-    cout << endl;
-    c.removeAt(2);
-    c.print();cout << ": RemoveAt";
-    cout << endl;
-    cout << c.retreiveAt(3); cout << ": retreiveAt";
-    cout << endl;
-    c.replaceAt(4,6);
-    c.print();cout << ": replaceAt";
-    cout << endl;
+    //Başa ekleme işlemi:
+    auto beginzeroPoint10000 = chrono::high_resolution_clock::now();
+    onbinlikArray.ekle(rand(), 1);
+    auto endzeroPoint10000 = chrono::high_resolution_clock::now();
+    auto elapsedzeroPoint10000 = chrono::duration_cast<chrono::microseconds>(endzeroPoint10000 - beginzeroPoint10000);
 
-    c.replaceAt(0,6);   c.replaceAt(1,6);   c.replaceAt(2,6);   c.replaceAt(3,6);   c.replaceAt(4,6);
-    c.replaceAt(5,6);   c.replaceAt(6,6);   c.replaceAt(7,6);
-    if(c.isEmpty()) {
-        cout << endl << "array List is empty" << endl;
-    } else {
-        cout << "array List is not empty" << endl;
-    }
+    //Ortaya ekleme işlemi:
+    auto beginmidPoint10000 = chrono::high_resolution_clock::now();
+    onbinlikArray.ekle(rand(), 500);
+    auto endmidPoint10000 = chrono::high_resolution_clock::now();
+    auto elapsedmidPoint10000 = chrono::duration_cast<chrono::microseconds>(endmidPoint10000 - beginmidPoint10000);
 
-    if(c.isFull() == true) {
-        cout << "array List is Full" << endl;
-    } else if(!c.isFull()) {
-        cout << "array List is not Full" << endl;
-    }
-    c.print(); cout << endl;
-    c.replaceAt(0,8);   c.replaceAt(1,5);   c.replaceAt(2,5);   c.replaceAt(3,5);   c.replaceAt(4,3);
-    c.replaceAt(5,6);   c.replaceAt(6,8);   c.replaceAt(7,8);   c.replaceAt(8,8);   c.replaceAt(9,1);
-    if(c.isEmpty()) {
-        cout << endl << "array List is empty" << endl;
-    } else {
-        cout << "array List is not empty" << endl;
-    }
+    //Ortaya ekleme işlemi:
+    auto beginendPoint10000 = chrono::high_resolution_clock::now();
+    onbinlikArray.sonaEkle(rand());
+    auto endendPoint10000 = chrono::high_resolution_clock::now();
+    auto elapsedendPoint10000 = chrono::duration_cast<chrono::microseconds>(endendPoint10000 - beginendPoint10000);
 
-    if(c.isFull() == true) {
-        cout << "array List is Full" << endl;
-    } else if(!c.isFull()) {
-        cout << "array List is not Full" << endl;
-    }
-    c.print(); cout << endl;
-    cout << endl << endl << "this is the min: " << c.getMin() << endl << endl << endl;
-    c.clearList();
-    c.print();cout << ": clear list";
-    cout << endl;
 
-    c.~arrayList();
-
+    cout << "\n\n100 elemanli array icin: ";
+    cout << "\nBasa Ekleme Suresi => " << elapsedzeroPoint100.count() << " mikro saniye" << endl;
+    cout << "Ortaya Ekleme Suresi => " << elapsedmidPoint100.count() << " mikro saniye" << endl;
+    cout << "Sona Ekleme Suresi => " << elapsedendPoint100.count() << " mikro saniye" << endl;
+    cout << "1000 elemanli array icin: ";
+    cout << "\nBasa Ekleme Suresi => " << elapsedzeroPoint1000.count() << " mikro saniye" << endl;
+    cout << "Ortaya Ekleme Suresi => " << elapsedmidPoint1000.count() << " mikro saniye" << endl;
+    cout << "Sona Ekleme Suresi => " << elapsedendPoint1000.count() << " mikro saniye" << endl;
+    cout << "10000 elemanli array icin: ";
+    cout << "\nBasa Ekleme Suresi => " << elapsedzeroPoint10000.count() << " mikro saniye" << endl;
+    cout << "Ortaya Ekleme Suresi => " << elapsedmidPoint10000.count() << " mikro saniye" << endl;
+    cout << "Sona Ekleme Suresi => " << elapsedendPoint10000.count() << " mikro saniye" << endl;
+    yuzlukArray.temizle();
+    yuzlukArray.~arrayList();
+    binlikArray.temizle();
+    binlikArray.~arrayList();
+    onbinlikArray.temizle();
+    onbinlikArray.~arrayList();
     return 0;
 }
